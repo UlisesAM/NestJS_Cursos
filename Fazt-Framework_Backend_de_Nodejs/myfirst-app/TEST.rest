@@ -1,0 +1,10 @@
+GET http://localhost:3000/task/all
+
+###
+POST http://localhost:3000/task
+
+###
+PUT http://localhost:3000/task
+
+###
+DELETE http://localhost:3000/task
