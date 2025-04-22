@@ -62,9 +62,11 @@ export class AppModule {}
 
 ### 📡 Controladores (Controllers)
 
-Los controladores manejan las rutas y peticiones HTTP. Usan decoradores como @Get, @Post, etc.
+Los controladores manejan las rutas y peticiones HTTP. Usan decoradores como @Get, @Post, @Put, @Delete, etc.
 
 ```typescript
+import { Controller, Get, Post } from "@nestjs/common";
+
 @Controller("users")
 export class UserController {
 	@Get()
@@ -123,7 +125,13 @@ export class CreateUserDto {
 
 ```bash
 nest new project-name              # Crear un nuevo proyecto
+
 nest generate module users         # Crear módulo, out:"users/users.module.ts"
+# nest g mo users
+
 nest generate controller users     # Crear controlador, out:"users/users.controller.ts"
+# nest g co users
+
 nest generate service users        # Crear servicios, out:"users/users.service.ts"
+# nest g s users
 ```
