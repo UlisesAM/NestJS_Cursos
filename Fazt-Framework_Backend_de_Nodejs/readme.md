@@ -62,7 +62,7 @@ export class AppModule {}
 
 ### 📡 Controladores (Controllers)
 
-Los controladores manejan las rutas y peticiones HTTP. Usan decoradores como @Get, @Post, @Put, @Delete, etc.
+Los controladores manejan las rutas y peticiones HTTP. Usan decoradores como @Get, @Post, @Put, @Patch, @Delete, etc.
 
 ```typescript
 import { Controller, Get, Post } from "@nestjs/common";
@@ -79,10 +79,60 @@ export class UserController {
 		return `User #${id}`;
 	}
 
+	@Get("/hola")
+	sayHi() {
+		return `Hi user`;
+	}
+
 	@Post()
 	create(@Body() body: CreateUserDto) {
 		return body;
 	}
+}
+```
+
+#### `@Body()`
+
+Usado para obtener el **Request Body** de una petición http
+
+```typescript
+// POST http://localhost:3000/task
+// Content-Type: application/json
+// {
+//     "title":"testing",
+//     "status": true
+// }
+@Post()
+createTask(@Body() task: any) {
+	return this.taskService.createTask(task);
+}
+```
+
+#### `@Query()`
+
+Usado para leer la URL query de una petición http
+
+```typescript
+// GET http://localhost:3000/task?limite=3
+@Get()
+getAllTask(@Query() query: any) {
+	console.log(query); // query.limite
+	return this.taskService.getTask();
+}
+```
+
+#### `@Param`
+
+Usado para leer URL params en nuestra petición.
+
+`@Get('/:id')` → Configurar el decorador http con una variable genérica, esta sera con dos puntos y el nombre `:nombre`.  
+Este nombre tambien se usara para _param_ así `@Param('id')`
+
+```typescript
+// GET http://localhost:3000/task/2
+@Get('/:id')
+getTask(@Param('id') ID: string) {
+	return this.taskService.getTask(parseInt(ID));
 }
 ```
 

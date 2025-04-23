@@ -1,10 +1,25 @@
-GET http://localhost:3000/task/all
+GET http://localhost:3000/task/hi
+
+###
+GET http://localhost:3000/task?limite=3
+
+###
+GET http://localhost:3000/task/3
 
 ###
 POST http://localhost:3000/task
+Content-Type: application/json
+
+{
+    "title":"tarea3",
+    "status": true
+}
 
 ###
 PUT http://localhost:3000/task
+
+###
+PATCH http://localhost:3000/task
 
 ###
 DELETE http://localhost:3000/task

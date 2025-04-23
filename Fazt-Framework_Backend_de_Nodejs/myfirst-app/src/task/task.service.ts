@@ -2,16 +2,35 @@ import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class TaskService {
-  getTask() {
-    return ['t1', 't2', 't3'];
+  private tasks: {
+    title: string;
+    status: boolean;
+    id: number;
+  }[] = [];
+
+  getTasks() {
+    return this.tasks;
   }
 
-  createTask() {
+  getTask(id: number) {
+    return this.tasks.find((task) => task.id === id);
+  }
+
+  createTask(task: any) {
+    console.log(task);
+    this.tasks.push({
+      ...task,
+      id: this.tasks.length + 1,
+    });
     return 'crear tarea';
   }
 
   updateTask() {
     return 'actualizar tarea';
+  }
+
+  updateStatusTask() {
+    return 'actualizar status de tarea';
   }
 
   deleteTask() {
