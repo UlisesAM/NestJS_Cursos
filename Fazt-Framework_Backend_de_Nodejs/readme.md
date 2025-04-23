@@ -506,6 +506,7 @@ getTask(@Param('id') ID: string) {
 
 # CORS
 
+[Offcial Doc](https://docs.nestjs.com/security/cor)  
 [main.ts - código ejemplo](myfirst-app/src/main.ts)  
 De este modo permite cualquier dominio puede hacer un request al API
 
