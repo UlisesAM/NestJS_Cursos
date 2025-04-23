@@ -1,6 +1,8 @@
-# NestJS
+# NestJS - Fazt Code
 
-## instalación
+> [youtube curse](https://www.youtube.com/watch?v=wsqcg5ZtUMM)
+
+# Instalación
 
 ```bash
 # version de nodeJs usada : 20.11
@@ -10,7 +12,7 @@ nest -v
 # out: 11.0.6
 ```
 
-## ⚙️ CLI rápido
+# ⚙️ CLI rápido
 
 ```bash
 nest new project-name              # Crear un nuevo proyecto
@@ -25,7 +27,7 @@ nest generate service users        # Crear servicios, out:"users/users.service.t
 # nest g s users
 ```
 
-## Crear proyecto
+# Crear proyecto
 
 ```bash
 nest new <project-name>
@@ -37,7 +39,7 @@ npm run start # nest start
 npm run build # nest build
 ```
 
-### 🧱 Estructura básica de un proyecto
+## 🧱 Estructura básica de un proyecto
 
 Nest usa una arquitectura modular inspirada en Angular, perfecta para escalar apps grandes.
 
@@ -49,7 +51,7 @@ src/
 └── main.ts              # Punto de entrada de la aplicación
 ```
 
-### main.ts 🚀 Bootstrap de la app
+# 🚀 Bootstrap de la app `main.ts`
 
 Aquí se crea y lanza la aplicación Nest. Puedes usar app.use() para middlewares, configurar CORS, etc.
 
@@ -62,7 +64,7 @@ async function bootstrap() {
 bootstrap();
 ```
 
-### 🧩 Módulos (Modules)
+# 🧩 Módulos (Modules)
 
 Todo en Nest vive dentro de módulos. Son como contenedores de funcionalidades relacionadas.
 
@@ -75,7 +77,7 @@ Todo en Nest vive dentro de módulos. Son como contenedores de funcionalidades r
 export class AppModule {}
 ```
 
-### 📡 Controladores (Controllers)
+# 📡 Controladores (Controllers)
 
 Los controladores manejan las rutas y peticiones HTTP. Usan decoradores como @Get, @Post, @Put, @Patch, @Delete, etc.
 
@@ -106,7 +108,7 @@ export class UserController {
 }
 ```
 
-#### `@Body()`
+## `@Body()`
 
 Usado para obtener el **Request Body** de una petición http
 
@@ -123,7 +125,7 @@ createTask(@Body() task: any) {
 }
 ```
 
-#### `@Query()`
+## `@Query()`
 
 Usado para leer la URL query de una petición http
 
@@ -136,7 +138,7 @@ getAllTask(@Query() query: any) {
 }
 ```
 
-#### `@Param`
+## `@Param`
 
 Usado para leer URL params en nuestra petición.
 
@@ -151,7 +153,7 @@ getTask(@Param('id') ID: string) {
 }
 ```
 
-### 🛠️ Servicios (Services)
+# 🛠️ Servicios (Services)
 
 Los servicios manejan la lógica de negocio. Son inyectables y reutilizables entre controladores y otros servicios.
 
@@ -166,7 +168,7 @@ export class UserService {
 }
 ```
 
-#### 🔗 Inyección de dependencias
+## 🔗 Inyección de dependencias
 
 Nest inyecta instancias automáticamente. Aquí se inyecta UserService al constructor del controlador.
 
@@ -177,7 +179,7 @@ export class UserController {
 }
 ```
 
-### 📦 DTOs (Data Transfer Objects)
+# 📦 DTOs (Data Transfer Objects)
 
 Un DTO define la forma de los datos que espera recibir una petición, útil para validaciones con **class-validator**.  
 Por si solo, solo serviría para poder obtener autocompletado en variables en código
@@ -201,7 +203,7 @@ createTask(task: CreateTaskDto) {
 }
 ```
 
-#### DTO's Validations
+## DTO's Validations
 
 [Validation nestJS](https://docs.nestjs.com/techniques/validation)
 
@@ -257,7 +259,7 @@ app.useGlobalPipes(
 );
 ```
 
-## Http status errors
+# Http status errors
 
 ```typescript
 import { Controller, Get, HttpCode } from "@nestjs/common";
@@ -284,11 +286,11 @@ export class TestController {
 }
 ```
 
-## Pipes
+# Pipes
 
 Pipes permiten validar o transformar datos entrantes
 
-### En URL Params
+## En URL Params
 
 ```typescript
 // test.controller.ts
@@ -309,7 +311,7 @@ isUserActive(@Param('status', ParseBoolPipe) status: boolean) {
 }
 ```
 
-### Personalizado
+## Personalizado
 
 `nest g pipe <path/name>`  
 ej: `nest g pipe test/pipes/ValidarUser`
