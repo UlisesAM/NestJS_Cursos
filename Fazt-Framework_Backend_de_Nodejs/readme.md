@@ -233,8 +233,7 @@ export class CreateUserDto {
 	password: string;
 }
 
-// implementado en controller
-// user.controller.ts
+// user.controller.ts - implementado en controller
 import {
 	UsePipes,
 	ValidationPipe,
@@ -312,7 +311,8 @@ isUserActive(@Param('status', ParseBoolPipe) status: boolean) {
 
 ### Personalizado
 
-`nest g pipe test/pipes/ValidarUser`
+`nest g pipe <path/name>`  
+ej: `nest g pipe test/pipes/ValidarUser`
 
 ```typescript
 // pipes/validar-user.pipe.ts

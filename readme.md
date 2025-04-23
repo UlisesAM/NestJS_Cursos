@@ -13,4 +13,5 @@
     3. [Controller](Fazt-Framework_Backend_de_Nodejs/readme.md#-controladores-controllers)
     4. [Service](Fazt-Framework_Backend_de_Nodejs/readme.md#️-servicios-services)
     5. [DTO's](Fazt-Framework_Backend_de_Nodejs/readme.md#-dtos-data-transfer-objects)
- 5. [Http Code]()
+5. [Http Code](Fazt-Framework_Backend_de_Nodejs/readme.md#http-status-errors)
+6. [Pipes](Fazt-Framework_Backend_de_Nodejs/readme.md#pipes)
