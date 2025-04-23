@@ -469,6 +469,39 @@ Output:
 
 # Swagger
 
-[go to doc official](https://docs.nestjs.com/openapi/introduction#setup-options)
+[Go to doc official](https://docs.nestjs.com/openapi/introduction#setup-options)
 
 Instalar : `npm install --save @nestjs/swagger`
+
+### Configuración
+
+abrir en http://localhost:3000/swagger
+
+```typescript
+// main.ts
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+...
+// 		swagger config
+const config = new DocumentBuilder()
+	.setTitle("API de NestJS")
+	.setDescription("Curso de NestJS")
+	.setVersion("1.0")
+	.build();
+const documentFactory = () => SwaggerModule.createDocument(app, config);
+SwaggerModule.setup("swagger", app, documentFactory); // ir a http://localhost:3000/swagger
+```
+
+### Swagger comentarios y mas...
+
+```typescript
+// controller.ts
+@Get('/:id')
+@ApiOperation({ summary: 'Ver una tarea por id' })
+@ApiResponse({ status: 200, description: 'retorna una tarea' })
+@ApiResponse({ status: 404, description: 'not found' })
+getTask(@Param('id') ID: string) {
+  return this.taskService.getTask(parseInt(ID));
+}
+```
+
+# CORS

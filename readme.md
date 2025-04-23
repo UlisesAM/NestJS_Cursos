@@ -15,3 +15,5 @@
 6. [Pipes](Fazt-Framework_Backend_de_Nodejs/readme.md#-pipes-validación--transformación)
 7. [Guard](Fazt-Framework_Backend_de_Nodejs/readme.md#-guards-autorización)
 8. [Middleware](Fazt-Framework_Backend_de_Nodejs/readme.md#️-middleware)
+9. [Swagger](Fazt-Framework_Backend_de_Nodejs/readme.md#swagger)
+10. [CORS](Fazt-Framework_Backend_de_Nodejs/readme.md#cors)
