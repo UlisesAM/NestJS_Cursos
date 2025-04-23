@@ -1,12 +1,10 @@
 import { Injectable } from '@nestjs/common';
+import { CreateTaskDto } from './dto/create-task.dto';
+import { UpdateTaskDto } from './dto/update-task.dto copy';
 
 @Injectable()
 export class TaskService {
-  private tasks: {
-    title: string;
-    status: boolean;
-    id: number;
-  }[] = [];
+  private tasks: any[] = [];
 
   getTasks() {
     return this.tasks;
@@ -16,7 +14,7 @@ export class TaskService {
     return this.tasks.find((task) => task.id === id);
   }
 
-  createTask(task: any) {
+  createTask(task: CreateTaskDto) {
     console.log(task);
     this.tasks.push({
       ...task,
@@ -25,7 +23,7 @@ export class TaskService {
     return 'crear tarea';
   }
 
-  updateTask() {
+  updateTask(task: UpdateTaskDto) {
     return 'actualizar tarea';
   }
 

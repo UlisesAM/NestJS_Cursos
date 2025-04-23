@@ -164,11 +164,83 @@ export class UserController {
 
 ### 📦 DTOs (Data Transfer Objects)
 
+Un DTO define la forma de los datos que espera recibir una petición, útil para validaciones con **class-validator**.  
+Por si solo, solo serviría para poder obtener autocompletado en variables en código
+
 ```typescript
-export class CreateUserDto {
-	name: string;
-	age: number;
+// dto/createTask.dto.ts
+export class CreateTaskDto {
+	title: string;
+	status: boolean;
 }
+
+// task.controller.ts
+@Post()
+createTask(@Body() task: CreateTaskDto) {
+	return this.taskService.createTask(task);
+}
+
+// task.service.ts
+createTask(task: CreateTaskDto) {
+	return 'crear tarea';
+}
+```
+
+#### Validations
+
+[Validation nestJS](<[https://](https://docs.nestjs.com/techniques/validation)>)
+
+Instalar  
+`npm i --save class-validator class-transformer`
+
+En nuestros archivos de DTO's usaremos `class-validator`
+
+```typescript
+// dto/create-user.dto.ts
+import { IsEmail, IsNotEmpty, IsNumber, IsString, Max } from "class-validator";
+
+export class CreateUserDto {
+	@IsString()
+	@IsNotEmpty()
+	name: string;
+
+	@IsNumber()
+	@Max(120)
+	age: number;
+
+	@IsEmail()
+	@IsString()
+	@IsNotEmpty()
+	email: string;
+
+	@IsString()
+	@IsNotEmpty()
+	password: string;
+}
+
+// implementado en controller
+// user.controller.ts
+import {
+	UsePipes,
+	ValidationPipe,
+} from '@nestjs/common';
+...
+@Post()
+@UsePipes(new ValidationPipe())
+createUser(@Body() user: CreateUserDto) {
+	return this.userService.create(user);
+}
+```
+
+> HINT: Sí queremos usarlo de manera global en todo el proyecto, sin tener que agregar `@UsePipes(new ValidationPipe())` a cada función de los controladores, lo agregaremos bootstrap de la app en `main.ts`
+
+```typescript
+// validator antes del listener
+app.useGlobalPipes(
+	new ValidationPipe({
+		whitelist: true, // Opcional, evita parametros extra en un request body
+	})
+);
 ```
 
 ## ⚙️ CLI rápido
