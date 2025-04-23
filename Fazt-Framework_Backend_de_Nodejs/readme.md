@@ -232,7 +232,7 @@ createUser(@Body() user: CreateUserDto) {
 }
 ```
 
-> HINT: Sí queremos usarlo de manera global en todo el proyecto, sin tener que agregar `@UsePipes(new ValidationPipe())` a cada función de los controladores, lo agregaremos bootstrap de la app en `main.ts`
+> HINT: Sí queremos usarlo de manera global en todo el proyecto, sin tener que agregar `@UsePipes(new ValidationPipe())` a cada función de los controladores, lo agregaremos al bootstrap de la app en `main.ts`
 
 ```typescript
 // validator antes del listener
