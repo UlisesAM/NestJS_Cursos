@@ -188,7 +188,7 @@ createTask(task: CreateTaskDto) {
 
 #### Validations
 
-[Validation nestJS](<[https://](https://docs.nestjs.com/techniques/validation)>)
+[Validation nestJS](https://docs.nestjs.com/techniques/validation)
 
 Instalar  
 `npm i --save class-validator class-transformer`
