@@ -201,7 +201,7 @@ createTask(task: CreateTaskDto) {
 }
 ```
 
-#### Validations
+#### DTO's Validations
 
 [Validation nestJS](https://docs.nestjs.com/techniques/validation)
 
