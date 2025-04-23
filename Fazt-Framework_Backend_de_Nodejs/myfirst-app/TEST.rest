@@ -36,3 +36,19 @@ Content-Type: application/json
     "email":"ulis@gmail.com",
     "password":"test"
 }
+
+
+### Request de PRUEBAS
+GET http://localhost:3000/test/notfound
+###
+GET http://localhost:3000/test/errorPage
+###
+GET http://localhost:3000/test/new
+###
+GET http://localhost:3000/test/ticket/3
+###
+GET http://localhost:3000/test/active/true
+###
+GET http://localhost:3000/test/greet
+?name=ulises
+&age=22

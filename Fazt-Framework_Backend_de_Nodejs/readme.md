@@ -10,6 +10,21 @@ nest -v
 # out: 11.0.6
 ```
 
+## ⚙️ CLI rápido
+
+```bash
+nest new project-name              # Crear un nuevo proyecto
+
+nest generate module users         # Crear módulo, out:"users/users.module.ts"
+# nest g mo users
+
+nest generate controller users     # Crear controlador, out:"users/users.controller.ts"
+# nest g co users
+
+nest generate service users        # Crear servicios, out:"users/users.service.ts"
+# nest g s users
+```
+
 ## Crear proyecto
 
 ```bash
@@ -243,17 +258,82 @@ app.useGlobalPipes(
 );
 ```
 
-## ⚙️ CLI rápido
+## Http status errors
 
-```bash
-nest new project-name              # Crear un nuevo proyecto
+```typescript
+import { Controller, Get, HttpCode } from "@nestjs/common";
 
-nest generate module users         # Crear módulo, out:"users/users.module.ts"
-# nest g mo users
+@Controller("test")
+export class TestController {
+	@Get("notfound")
+	@HttpCode(404)
+	notFoundPage() {
+		return "not found page";
+	}
 
-nest generate controller users     # Crear controlador, out:"users/users.controller.ts"
-# nest g co users
+	@Get("errorPage")
+	@HttpCode(500)
+	errorPage() {
+		return "error Route!!";
+	}
 
-nest generate service users        # Crear servicios, out:"users/users.service.ts"
-# nest g s users
+	@Get("new")
+	@HttpCode(201)
+	someThing() {
+		return "Something new";
+	}
+}
+```
+
+## Pipes
+
+Pipes permiten validar o transformar datos entrantes
+
+### En URL Params
+
+```typescript
+// test.controller.ts
+import {
+  ParseBoolPipe,
+  ParseIntPipe,
+} from '@nestjs/common';
+...
+@Get('ticket/:num')
+getNumber(@Param('num', ParseIntPipe) num: number) {
+	return num + 8;
+}
+
+@Get('active/:status')
+isUserActive(@Param('status', ParseBoolPipe) status: boolean) {
+	console.log(typeof status);
+	return status;
+}
+```
+
+### Personalizado
+
+`nest g pipe test/pipes/ValidarUser`
+
+```typescript
+// pipes/validar-user.pipe.ts
+@Injectable()
+export class ValidarUserPipe implements PipeTransform {
+  transform(value: any, metadata: ArgumentMetadata) {
+    const ageNumber = parseInt(value.age.toString());
+
+    if (isNaN(ageNumber)) {
+      throw new HttpException('Age must be a number', HttpStatus.BAD_REQUEST);
+    }
+
+    return { ...value, age: ageNumber };
+  }
+}
+
+// test.controller.ts
+@Get('greet')
+greet(@Query(ValidarUserPipe) query: { name: string; age: number }) {
+    console.log(typeof query.name); // string
+    console.log(typeof query.age); // number
+	return `hello ${query.name}, your are ${query.age} old`;
+}
 ```
