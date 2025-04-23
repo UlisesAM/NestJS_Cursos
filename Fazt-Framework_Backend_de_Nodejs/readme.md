@@ -505,3 +505,20 @@ getTask(@Param('id') ID: string) {
 ```
 
 # CORS
+
+[main.ts - código ejemplo](myfirst-app/src/main.ts)  
+De este modo permite cualquier dominio puede hacer un request al API
+
+```typescript
+// main.ts - bootstrap
+app.enableCors();
+```
+
+De este modo podemos decirle que dominios pueden hacer request al API. Podemos poner un array de strings o un string solamente también
+
+```typescript
+// main.ts - bootstrap
+app.enableCors({
+	origin: ["http://example.com", "https://www.google.com"],
+});
+```
