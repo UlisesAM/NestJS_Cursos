@@ -373,3 +373,73 @@ greet(@Query() query: { name: string }) {
 	return `hello ${query.name}`;
 }
 ```
+
+# 🛡️ Middleware
+
+Middleware funciona antes de que llegue al controlador. Útil para logs, auth, headers, etc.
+
+`nest g middleware <path/name>` o shorthand `nest g mi <path/name>`  
+ej: `nest g middleware user/logger` out: src/user/logger/logger.middleware.ts
+
+```typescript
+// user/logger/logger.middleware.ts
+import { Injectable, NestMiddleware } from "@nestjs/common";
+import { Request, Response } from "express"; // agregamos esto para autocomplete código
+
+@Injectable()
+export class LoggerMiddleware implements NestMiddleware {
+	use(req: Request, res: Response, next: () => void) {
+		console.log("middleware:", req.originalUrl);
+
+		next();
+	}
+}
+```
+
+```typescript
+// user/auth/auth.middleware.ts
+import {
+	HttpException,
+	HttpStatus,
+	Injectable,
+	NestMiddleware,
+} from "@nestjs/common";
+import { Request, Response } from "express";
+
+@Injectable()
+export class AuthMiddleware implements NestMiddleware {
+	use(req: Request, res: Response, next: () => void) {
+		const { validador } = req.headers;
+
+		if (!validador) {
+			throw new HttpException("No autorizado", HttpStatus.UNAUTHORIZED);
+		}
+
+		if (validador !== "xyz") {
+			throw new HttpException("Prohibido", HttpStatus.FORBIDDEN);
+		}
+
+		next();
+	}
+}
+```
+
+```typescript
+// user.module.ts
+export class UserModule implements NestModule {
+	configure(consumer: MiddlewareConsumer) {
+		consumer
+			.apply(LoggerMiddleware) // reglas de LoggerMiddleware
+			.forRoutes(
+				{ path: 'user', method: RequestMethod.POST },
+				{ path: 'user/hi', method: RequestMethod.GET },
+			)
+			.apply(AuthMiddleware) // reglas de AuthMiddleware
+			.forRoutes('user');
+}
+```
+
+1. Implementar `NestModule` a la clase del module
+2. Agregamos función `configure(consumer: MiddlewareConsumer)` para poder configurar sus middlewares
+3. Agregar middlewares con `.apply(...)`
+4. Especificamos a que routes o http methods se aplicara el middleware con `.forRoutes`
