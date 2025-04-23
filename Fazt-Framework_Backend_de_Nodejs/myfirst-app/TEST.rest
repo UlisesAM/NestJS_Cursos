@@ -52,3 +52,4 @@ GET http://localhost:3000/test/active/true
 GET http://localhost:3000/test/greet
 ?name=ulises
 &age=22
+Validar: "something"

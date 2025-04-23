@@ -286,7 +286,7 @@ export class TestController {
 }
 ```
 
-# Pipes
+# 🧪 Pipes (Validación / transformación)
 
 Pipes permiten validar o transformar datos entrantes
 
@@ -337,5 +337,39 @@ greet(@Query(ValidarUserPipe) query: { name: string; age: number }) {
     console.log(typeof query.name); // string
     console.log(typeof query.age); // number
 	return `hello ${query.name}, your are ${query.age} old`;
+}
+```
+
+# 🔒 Guards (Autorización)
+
+Los guards deciden si se permite acceder a una ruta. Ideal para manejar roles o tokens JWT.
+
+`nest g guard <path/name>`  
+ej: `nest g guard test/guard/auth`
+
+```typescript
+// guard/auth.guard.ts
+// Sí retornamos false, el flujo termina. Sí no este continuara
+@Injectable()
+export class AuthGuard implements CanActivate {
+	canActivate(
+		context: ExecutionContext
+	): boolean | Promise<boolean> | Observable<boolean> {
+		const req = context.switchToHttp().getRequest() as Request;
+		console.log(req.headers); // out: /test/greet?name=ulises&age=22
+
+		if (req.url === "/test/greet") return false; // termina request en error
+
+		if (!req.headers["validar"]) return false; // termina request en error
+
+		return true; // continua con la lógica
+	}
+}
+
+// test.controller.ts
+@Get('greet')
+@UseGuards(AuthGuard)
+greet(@Query() query: { name: string }) {
+	return `hello ${query.name}`;
 }
 ```

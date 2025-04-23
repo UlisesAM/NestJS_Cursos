@@ -6,8 +6,10 @@ import {
   ParseBoolPipe,
   ParseIntPipe,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { ValidarUserPipe } from './pipes/validar-user/validar-user.pipe';
+import { AuthGuard } from './guard/auth/auth.guard';
 
 @Controller('test')
 export class TestController {
@@ -41,6 +43,7 @@ export class TestController {
   }
 
   @Get('greet')
+  @UseGuards(AuthGuard)
   greet(@Query(ValidarUserPipe) query: { name: string; age: number }) {
     console.log(typeof query.name); // string
     console.log(typeof query.age); // number
