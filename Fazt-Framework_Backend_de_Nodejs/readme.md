@@ -15,16 +15,19 @@ nest -v
 # ⚙️ CLI rápido
 
 ```bash
-nest new project-name              # Crear un nuevo proyecto
+nest new project-name         	# Crear un nuevo proyecto
 
-nest generate module users         # Crear módulo, out:"users/users.module.ts"
-# nest g mo users
+nest generate module <name>    	# Crear módulo, out:"users/users.module.ts"
+# nest g mo <name>
 
-nest generate controller users     # Crear controlador, out:"users/users.controller.ts"
-# nest g co users
+nest generate controller <name>	# Crear controlador, out:"users/users.controller.ts"
+# nest g co <name>
 
-nest generate service users        # Crear servicios, out:"users/users.service.ts"
-# nest g s users
+nest generate service <name>   	# Crear servicios, out:"users/users.service.ts"
+# nest g s <name>
+
+nest g resource <name> 			# genera todo lo anterior en un solo paso
+# nest g res <name>
 ```
 
 # Crear proyecto
@@ -443,3 +446,29 @@ export class UserModule implements NestModule {
 2. Agregamos función `configure(consumer: MiddlewareConsumer)` para poder configurar sus middlewares
 3. Agregar middlewares con `.apply(...)`
 4. Especificamos a que routes o http methods se aplicara el middleware con `.forRoutes`
+
+# Resource CLI command
+
+Esto nos ayuda a crear todo nuestro modulo con module, controller, service, DTO's, etc..
+
+`nest g resource <name>` o shorthand `nest g res <name>`
+
+ej: `nest g resource pagos`
+
+-   pregunta por que tipo de recurso usaras (RestAPI, GraphQL, WebSocket, Microservice non-http)
+-   pregunta sí creara un CRUD o no
+
+Output:
+
+-   pagos.module
+-   pagos.controller
+-   pagos.service
+-   archivos de pruebas
+-   DTO's
+-   Entities
+
+# Swagger
+
+[go to doc official](https://docs.nestjs.com/openapi/introduction#setup-options)
+
+Instalar : `npm install --save @nestjs/swagger`
