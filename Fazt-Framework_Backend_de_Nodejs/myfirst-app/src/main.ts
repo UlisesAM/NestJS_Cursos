@@ -23,8 +23,9 @@ async function bootstrap() {
   SwaggerModule.setup('swagger', app, documentFactory); // ir a http://localhost:3000/swagger
 
   // CORS
+  // app.enableCors(); // deshabilitado
   app.enableCors({
-    origin: ['*', 'https://www.google.com']
+    origin: ['*', 'https://www.google.com'],
   });
 
   await app.listen(process.env.PORT ?? 3000);
