@@ -1,4 +1,9 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto copy';
 
@@ -14,6 +19,7 @@ export class TaskService {
     const task = this.tasks.find((task) => task.id === id);
     if (!task) {
       throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
+      // throw new NotFoundException('Not Found');
     }
     return task;
   }

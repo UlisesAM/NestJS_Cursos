@@ -289,6 +289,19 @@ export class TestController {
 }
 ```
 
+Estos errores son desde el código si queremos retornar error programaticamente.  
+Estos están en la librería `'@nestjs/common'`
+
+```typescript
+// Error Genérico
+throw new HttpException("Not Found", HttpStatus.NOT_FOUND);
+
+// Errores específicos
+throw new NotFoundException("Not Found");
+throw new BadRequestException('not found');
+throw new ForbiddenException('forbidden');
+```
+
 # 🧪 Pipes (Validación / transformación)
 
 Pipes permiten validar o transformar datos entrantes
