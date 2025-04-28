@@ -1,0 +1,32 @@
+GET /user
+Host: localhost:3000
+
+###
+POST /user
+Host: localhost:3000
+Content-Type: application/json
+
+{
+    "name":"ulises",
+    "uidName":"uif",
+    "rolId":1
+}
+
+###
+GET /user/1
+Host: localhost:3000
+
+###
+PATCH /user/1
+Host: localhost:3000
+Content-Type: application/json
+
+{
+    "name":"ulises",
+    "uidName":"uif",
+    "rolId":2
+}
+
+###
+DELETE /user/93
+Host: localhost:3000
