@@ -181,13 +181,18 @@ Explicación:
 
 ```typescript
 // user/dto/create.dto.ts
+import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 export class CreateUserDto {
-  id: number;
+  @IsString()
+  @IsNotEmpty()
   uidName: string;
+
+  @IsString()
   name: string;
+
+  @IsNumber()
+  @IsNotEmpty()
   rolId: number;
-  createdAt: Date;
-  updatedAt: Date;
 }
 ```
 
