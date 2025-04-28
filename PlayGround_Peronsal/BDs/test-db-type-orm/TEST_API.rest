@@ -1,3 +1,4 @@
+###
 GET /user
 Host: localhost:3000
 
@@ -22,7 +23,7 @@ Host: localhost:3000
 Content-Type: application/json
 
 {
-    "name":"ulises",
+    "name":"",
     "uidName":"uif",
     "rolId":2
 }
