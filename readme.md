@@ -17,3 +17,8 @@
 8. [Middleware](Fazt-Framework_Backend_de_Nodejs/readme.md#️-middleware)
 9. [Swagger](Fazt-Framework_Backend_de_Nodejs/readme.md#swagger)
 10. [CORS](Fazt-Framework_Backend_de_Nodejs/readme.md#cors)
+
+# My Play Grounds
+
+-   [DB Oracle + TypeORM](PlayGround_Peronsal/BDs/test-db-type-orm/README.md)
+-   [DB Oracle + Sequelize ORM](PlayGround_Peronsal/BDs/test-dbs/README.md)
