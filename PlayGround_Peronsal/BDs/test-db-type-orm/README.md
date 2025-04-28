@@ -1,98 +1,248 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# TypeORM + DB Oracle
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+> [Official doc](https://github.com/typeorm/typeorm)
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+> [NestJs doc](https://docs.nestjs.com/techniques/database)
 
-## Description
+> [main reame](doc/mainReadme.md)
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
-
-## Project setup
+## 1. Instalación básica
 
 ```bash
-$ npm install
+npm install @nestjs/typeorm typeorm oracledb
 ```
 
-## Compile and run the project
+- `@nestjs/typeorm`: integración de TypeORM con NestJS
 
-```bash
-# development
-$ npm run start
+- `typeorm`: el ORM
 
-# watch mode
-$ npm run start:dev
+- `oracledb`: cliente Node.js para conectarse a bases de datos Oracle. `pg` para Postgres
 
-# production mode
-$ npm run start:prod
+## 2. Configuración DB en `AppModule`
+
+```typescript
+// src/app.module.ts
+import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { User } from './user/user.entity';
+import { UserModule } from './user/user.module';
+
+@Module({
+  imports: [
+    TypeOrmModule.forRoot({
+      type: 'oracle',
+      host: 'localhost',
+      port: 1521,
+      username: 'usuario_oracle',
+      password: 'contraseña_oracle',
+      serviceName: 'TQDEV', // o SID de la base de datos (puede ser sid dependiendo de tu setup)
+      entities: [User], // lista de clases que representan tablas
+      synchronize: false, // true solo en desarrollo, crea tablas automáticamente
+    }),
+    UserModule,
+  ],
+})
+export class AppModule {}
 ```
 
-## Run tests
+## 3. Entity - Creación
 
-```bash
-# unit tests
-$ npm run test
+Estos los podemos crear dentro de un modulo que los usara o que tenga relacionado su lógica
 
-# e2e tests
-$ npm run test:e2e
+Hay dos patrones de ORM que se pueden usar (para el ejemplo usamos Data Mapper)
 
-# test coverage
-$ npm run test:cov
+- [Active Record](https://github.com/typeorm/typeorm/blob/master/docs/active-record-data-mapper.md#what-is-the-active-record-pattern)
+- [Data Mapper](https://github.com/typeorm/typeorm/blob/master/docs/active-record-data-mapper.md#what-is-the-data-mapper-pattern)
+
+```typescript
+// src/user/entity/user.entity.ts
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
+
+@Entity({ name: 'T_USER' })
+export class User {
+  @PrimaryGeneratedColumn({ name: 'ID' })
+  id: number;
+
+  @Column({ name: 'UID_NAME' })
+  uidName: string;
+
+  @Column({ name: 'NAME' })
+  name: string;
+
+  @Column({ name: 'ROL_ID' })
+  rolId: number;
+
+  @CreateDateColumn({ name: 'CREATED_AT', type: 'date' })
+  createdAt: Date;
+
+  @UpdateDateColumn({ name: 'UPDATED_AT', type: 'timestamp', nullable: true })
+  updatedAt: Date;
+}
 ```
 
-## Deployment
+Explicación:
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+- `@Entity()`: dice que esta clase será una tabla en Oracle.
+- `@PrimaryGeneratedColumn()`: Oracle creará un ID único automático.
+- `@Column()`: un campo normal en la tabla.
+- `@CreateDateColumn`, `@UpdateDateColumn`: Nest/TypeORM llena automáticamente estas fechas en **INSERT** y **UPDATE**
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+## 4. Module + Service + DTO + Controller
 
-```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+### Module
+
+```typescript
+// src/user/user.module.ts
+import { Module } from '@nestjs/common';
+import { UserService } from './user.service';
+import { UserController } from './user.controller';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { User } from './entities/user.entity';
+
+@Module({
+  imports: [TypeOrmModule.forFeature([User])],
+  controllers: [UserController],
+  providers: [UserService],
+})
+export class UserModule {}
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+Explicación:
 
-## Resources
+- `TypeOrmModule.forFeature([User])`: habilita la inyección del repositorio de User en el servicio.
 
-Check out a few resources that may come in handy when working with NestJS:
+### Service
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+Usando el Repository pattern
 
-## Support
+```typescript
+// user/user.service.ts
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { User } from './entities/user.entity';
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+@Injectable()
+export class UserService {
+  constructor(
+    @InjectRepository(User)
+    private userRepository: Repository<User>,
+  ) {}
 
-## Stay in touch
+  create(userDTO: CreateUserDto) {
+    const user = this.userRepository.create(userDTO);
+    return this.userRepository.save(user);
+  }
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+  findAll() {
+    return this.userRepository.find();
+  }
 
-## License
+  async findOne() {
+    return await this.userRepository.findOneBy({
+      name: 'ulises',
+      uidName: 'uid10903',
+    });
+  }
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+  async update(id: number, updateUserDto: UpdateUserDto) {
+    const result = await this.userRepository.update(id, updateUserDto);
+
+    if (result.affected === 0) {
+      throw new NotFoundException(`User with ID ${id} not found`);
+    }
+
+    return { message: 'User updated successfully' };
+  }
+
+  async remove(id: number) {
+    const user = await this.userRepository.findOne({ where: { id } });
+    if (!user) {
+      throw new NotFoundException(`User with ID ${id} not found`);
+    }
+    return this.userRepository.remove(user);
+  }
+}
+```
+
+Explicación:
+
+- Usamos `@InjectRepository(User)` para acceder fácilmente a la tabla User.
+
+### DTOs
+
+```typescript
+// user/dto/create.dto.ts
+export class CreateUserDto {
+  id: number;
+  uidName: string;
+  name: string;
+  rolId: number;
+  createdAt: Date;
+  updatedAt: Date;
+}
+```
+
+```typescript
+// user/dto/update.dto.ts
+import { PartialType } from '@nestjs/mapped-types';
+import { CreateUserDto } from './create-user.dto';
+
+export class UpdateUserDto extends PartialType(CreateUserDto) {}
+```
+
+### Controller
+
+```typescript
+// user/user.controller.ts
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
+import { UserService } from './user.service';
+import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
+
+@Controller('user')
+export class UserController {
+  constructor(private readonly userService: UserService) {}
+
+  @Post()
+  create(@Body() createUserDto: CreateUserDto) {
+    return this.userService.create(createUserDto);
+  }
+
+  @Get()
+  findAll() {
+    return this.userService.findAll();
+  }
+
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.userService.findOne(+id);
+  }
+
+  @Patch(':id')
+  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+    return this.userService.update(+id, updateUserDto);
+  }
+
+  @Delete(':id')
+  remove(@Param('id') id: string) {
+    return this.userService.remove(+id);
+  }
+}
+```
