@@ -32,4 +32,11 @@ export class TestTableService {
   remove(id: number) {
     return `This action removes a #${id} testTable`;
   }
+
+  findNotEmpty() {
+    return this.testRepo
+      .createQueryBuilder('t')
+      .where('t.name IS NOT NULL')
+      .getMany();
+  }
 }

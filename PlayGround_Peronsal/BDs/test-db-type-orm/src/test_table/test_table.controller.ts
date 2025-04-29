@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { TestTableService } from './test_table.service';
 import { CreateTestTableDto } from './dto/create-test_table.dto';
 import { UpdateTestTableDto } from './dto/update-test_table.dto';
@@ -17,13 +25,21 @@ export class TestTableController {
     return this.testTableService.findAll();
   }
 
+  @Get('not_empty')
+  not_empty() {
+    return this.testTableService.findNotEmpty();
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.testTableService.findOne(+id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateTestTableDto: UpdateTestTableDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateTestTableDto: UpdateTestTableDto,
+  ) {
     return this.testTableService.update(+id, updateTestTableDto);
   }
 

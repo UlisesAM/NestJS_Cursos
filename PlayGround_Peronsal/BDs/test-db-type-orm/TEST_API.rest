@@ -39,6 +39,10 @@ GET /test-table
 Host: localhost:3000
 
 ###
+GET /test-table/not_empty
+Host: localhost:3000
+
+###
 POST /test-table
 Host: localhost:3000
 Content-Type: application/json
