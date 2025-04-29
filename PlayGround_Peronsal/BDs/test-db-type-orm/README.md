@@ -259,11 +259,21 @@ export class UserController {
 # QueryBuilder
 
 ```typescript
-const usuarios = await this.usuarioRepo
-  .createQueryBuilder('usuario')
-  .where('usuario.nombre = :nombre', { nombre: 'Juan' })
+const respuesta = this.userRepository
+  .createQueryBuilder('user')
+  .where('user.age > :age', { age })
+  .andWhere('user.isActive = :isActive', { isActive: true })
+  .orderBy('user.age', 'DESC')
   .getMany();
 ```
+
+| Método                        | Descripción                                  |
+| ----------------------------- | -------------------------------------------- |
+| `.createQueryBuilder(alias)`  | Crea el constructor de consulta              |
+| `.where()`, `.andWhere()`     | Agregan condiciones WHERE                    |
+| `.orderBy()`                  | Ordena los resultados                        |
+| `.leftJoin()`, `.innerJoin()` | Para hacer joins con otras entidades         |
+| `.getOne()`, `.getMany()`     | Ejecuta la consulta y retorna los resultados |
 
 # Relaciones (OneToMany, ManyToOne)
 
