@@ -258,6 +258,8 @@ export class UserController {
 
 # QueryBuilder
 
+> [código ejemplo](src/test_table/test_table.service.ts)
+
 ```typescript
 const respuesta = this.userRepository
   .createQueryBuilder('user')
