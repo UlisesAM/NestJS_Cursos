@@ -6,6 +6,8 @@
 
 > [main reame](doc/mainReadme.md)
 
+# Basico
+
 ## 1. Instalación básica
 
 ```bash
@@ -251,5 +253,105 @@ export class UserController {
   remove(@Param('id') id: string) {
     return this.userService.remove(+id);
   }
+}
+```
+
+# QueryBuilder
+
+```typescript
+const usuarios = await this.usuarioRepo
+  .createQueryBuilder('usuario')
+  .where('usuario.nombre = :nombre', { nombre: 'Juan' })
+  .getMany();
+```
+
+# Relaciones (OneToMany, ManyToOne)
+
+Ejemplo:
+2 tablas User y Roles, muchos usuarios tienen 1 rol (muchos a 1)
+
+```typescript
+// user.entity.ts
+import { RolEntity } from 'src/rol/entities/rol.entity';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+  UpdateDateColumn,
+  ManyToOne,
+  JoinColumn,
+} from 'typeorm';
+
+@Entity({ name: 'T_USER' })
+export class UserEntity {
+  @PrimaryGeneratedColumn({ name: 'ID' })
+  id: number;
+
+  @Column({ name: 'NAME' })
+  name: string;
+
+  // ID del ROL
+  @Column({ name: 'ROL_ID' })
+  rolId: number;
+
+  // nueva propiedad con el objeto de ROL
+  @ManyToOne(() => RolEntity, (rol) => rol.usuarios, { eager: true })
+  @JoinColumn({ name: 'ROL_ID' }) // Aquí se mapea la columna de la FK
+  rolData: RolEntity;
+}
+```
+
+```typescript
+// roles.entity.ts
+import { UserEntity } from 'src/user/entities/user.entity';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+
+@Entity({ name: 'T_ROL_TYPE' })
+export class RolEntity {
+  @PrimaryGeneratedColumn({ name: 'ID' })
+  id: number;
+
+  @Column({ name: 'NAME' })
+  name: string;
+
+  @OneToMany(() => UserEntity, (user) => user.rolData)
+  usuarios: UserEntity[];
+}
+```
+
+Explicación
+
+- `@JoinColumn()` se coloca en la entidad que tiene la clave foránea (FK). Solo se necesita en un lado de la relación.
+- `eager: true` : en UserEntity usamos esta bandera. Configura la relación para cargar automáticamente en cada request.  
+  Si no estuvieras usando `eager: true`, tendrías que hacer lo siguiente:
+
+```typescript
+async findAll(): Promise<UserEntity[]> {
+  return this.userRepository.find({
+    relations: ['rolData'], // Incluye la relación manualmente
+  });
+}
+```
+
+Para este caso se separo en un parámetro nuevo (**rolData**) la relación del ROL_ID con un objeto de RolEntity para simplificar el INSERT o UPDATE de usuarios, ya que no necesito estar modificando o creando un rol nuevo cada que creo un usuario, solo necesito su relación para obtener los datos del rol.  
+Sí hubiera usado la misma columna como columna de de relación a roles, se tendría que modificar el servicio de crear/actualizar usuarios para primero buscar el objeto del rol y después pasarlo al JSON que se pasa al userRepository, algo asi:
+
+```typescript
+// service
+async create(createUserDto: CreateUserDto): Promise<UserEntity> {
+  const rol = await this.rolRepository.findOneBy({ id: createUserDto.rolId });
+
+  if (!rol) {
+    throw new Error('Rol no encontrado');
+  }
+
+  const newUser = this.userRepository.create({
+    uidName: createUserDto.uidName,
+    name: createUserDto.name,
+    rol: rol, // asignas el objeto RolEntity, no el ID directamente
+  });
+
+  return this.userRepository.save(newUser);
 }
 ```

@@ -3,8 +3,10 @@ import { UserModule } from './user/user.module';
 
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TestTableModule } from './test_table/test_table.module';
-import { User } from './user/entities/user.entity';
+import { UserEntity } from './user/entities/user.entity';
 import { TestTableEntity } from './test_table/entities/test_table.entity';
+import { RolModule } from './rol/rol.module';
+import { RolEntity } from './rol/entities/rol.entity';
 
 @Module({
   imports: [
@@ -15,11 +17,12 @@ import { TestTableEntity } from './test_table/entities/test_table.entity';
       username: 'uavaloz',
       password: 'uavaloz',
       serviceName: 'TQDEV', // SID de la base de datos (puede ser SERVICE_NAME dependiendo de tu setup)
-      entities: [User, TestTableEntity],
+      entities: [UserEntity, TestTableEntity, RolEntity],
       synchronize: false, // solo en desarrollo, crea tablas automáticamente
     }),
     UserModule,
     TestTableModule,
+    RolModule,
   ],
   controllers: [],
   providers: [],

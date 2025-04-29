@@ -21,4 +21,4 @@
 # My Play Grounds
 
 -   [DB Oracle + TypeORM](PlayGround_Peronsal/BDs/test-db-type-orm/README.md)
--   [DB Oracle + Sequelize ORM](PlayGround_Peronsal/BDs/test-dbs/README.md)
+-   [DB Oracle + Sequelize ORM](PlayGround_Peronsal/BDs/test-dbs/README.md) 

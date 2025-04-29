@@ -10,7 +10,7 @@ Content-Type: application/json
 {
     "name":"ulises",
     "uidName":"uif",
-    "rolId":1
+    "rolId":2
 }
 
 ###
@@ -45,7 +45,7 @@ Content-Type: application/json
 
 {
     "name":"testing",
-    "flag": true,
-    "list_str": ["ulises", "avalos"]
+    "flag":true,
+    "list_str":["ulises", "avalos"]
 }
 
