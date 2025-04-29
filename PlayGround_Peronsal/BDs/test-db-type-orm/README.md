@@ -56,7 +56,7 @@ Hay dos patrones de ORM que se pueden usar (para el ejemplo usamos Data Mapper)
 - [Active Record](https://github.com/typeorm/typeorm/blob/master/docs/active-record-data-mapper.md#what-is-the-active-record-pattern)
 - [Data Mapper](https://github.com/typeorm/typeorm/blob/master/docs/active-record-data-mapper.md#what-is-the-data-mapper-pattern)
 
-ejemplos de entities [userEntity](src/user/entities/user.entity.ts), [testEntity](src/test_table/entities/test_table.entity.ts)
+ejemplos de entities [userEntity](src/user/entities/user.entity.ts), [rolEntity](src/rol/entities/rol.entity.ts), [testEntity](src/test_table/entities/test_table.entity.ts)
 
 ```typescript
 // src/user/entity/user.entity.ts
