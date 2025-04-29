@@ -31,3 +31,21 @@ Content-Type: application/json
 ###
 DELETE /user/94
 Host: localhost:3000
+
+
+### Test Table
+###
+GET /test-table
+Host: localhost:3000
+
+###
+POST /test-table
+Host: localhost:3000
+Content-Type: application/json
+
+{
+    "name":"testing",
+    "flag": true,
+    "list_str": ["ulises", "avalos"]
+}
+
