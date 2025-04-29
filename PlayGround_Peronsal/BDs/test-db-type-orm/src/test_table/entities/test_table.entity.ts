@@ -15,7 +15,10 @@ export class TestTableEntity {
     name: 'LIST_STR',
     type: 'clob', // o 'varchar2' si el contenido no es muy grande
     transformer: {
+      // convierte el array de JS a JSON string para guardarlo en la base.
       to: (value: string[]) => JSON.stringify(value),
+
+      // convierte el JSON string que viene de Oracle en un array.
       from: (value: string) => {
         try {
           return JSON.parse(value);
