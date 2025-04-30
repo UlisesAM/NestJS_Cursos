@@ -30,13 +30,22 @@ nest g resource <name> 			# genera todo lo anterior en un solo paso
 # nest g res <name>
 ```
 
+Mas...
+
+```bash
+nest g pipe <path/name>			# Crear Pipe (validate/transform)
+nest g guard <path/name>		# Crear Guard
+nest g middleware <path/name>	# Crear Middleware
+# nest g mi <path/name>
+```
+
 # Crear proyecto
 
 ```bash
 nest new <project-name>
 
-# Arrancar proyecto
-npm run start # nest start
+# Arrancar proyecto modo watch
+npm run start:dev # nest start --watch
 
 # para tanspilar el codigo en un folder a parte dist/
 npm run build # nest build
@@ -206,7 +215,7 @@ createTask(task: CreateTaskDto) {
 }
 ```
 
-## DTO's Validations
+## DTO's Validations - `class-validator`
 
 [Validation nestJS](https://docs.nestjs.com/techniques/validation)
 
@@ -298,8 +307,8 @@ throw new HttpException("Not Found", HttpStatus.NOT_FOUND);
 
 // Errores específicos
 throw new NotFoundException("Not Found");
-throw new BadRequestException('not found');
-throw new ForbiddenException('forbidden');
+throw new BadRequestException("not found");
+throw new ForbiddenException("forbidden");
 ```
 
 # 🧪 Pipes (Validación / transformación)
