@@ -11,7 +11,11 @@
 ## 1. Instalación básica
 
 ```bash
+# oracle
 npm install @nestjs/typeorm typeorm oracledb
+
+# postgres
+npm install --save @nestjs/typeorm typeorm pg
 ```
 
 - `@nestjs/typeorm`: integración de TypeORM con NestJS
@@ -21,6 +25,8 @@ npm install @nestjs/typeorm typeorm oracledb
 - `oracledb`: cliente Node.js para conectarse a bases de datos Oracle. `pg` para Postgres
 
 ## 2. Configuración DB en `AppModule`
+
+Oracle
 
 ```typescript
 // src/app.module.ts
@@ -45,6 +51,23 @@ import { UserModule } from './user/user.module';
   ],
 })
 export class AppModule {}
+```
+
+Postgres
+
+```typescript
+...
+TypeOrmModule.forRoot({
+  type: 'postgres',
+  host: 'localhost',
+  port: 5432,
+  password: 'simform',
+  username: 'postgres',
+  entities: [],
+  database: 'db_Name',
+  synchronize: false
+}),
+...
 ```
 
 ## 3. Entity - Creación
